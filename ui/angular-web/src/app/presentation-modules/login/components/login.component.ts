@@ -7,6 +7,12 @@ import {
   Validators,
 } from '@angular/forms';
 
+interface Error {
+  email: boolean;
+  password: boolean;
+  global: boolean;
+}
+
 @Component({
   selector: 'app-login',
   templateUrl: '../view/login.component.html',
@@ -17,7 +23,11 @@ export class LoginComponent implements OnInit {
   public form: FormGroup;
   public loading = false;
   public submitted = false;
-  public error = '';
+  public error: Error = {
+    email: false,
+    password: false,
+    global: false,
+  };
 
   // Convenience getters to access form control properties
   get email(): AbstractControl | null {
@@ -25,6 +35,9 @@ export class LoginComponent implements OnInit {
   }
   get password(): AbstractControl | null {
     return this.form.get('password');
+  }
+  get repeatPassword(): AbstractControl | null {
+    return this.form.get('repeatPassword');
   }
 
   constructor(private formBuilder: FormBuilder) {
@@ -35,12 +48,23 @@ export class LoginComponent implements OnInit {
       password: new FormControl('123456', {
         validators: [Validators.minLength(6), Validators.required],
       }),
+      repeatPassword: new FormControl('1234', {
+        validators: [Validators.required],
+      }),
     });
   }
 
   ngOnInit(): void {}
 
   submit() {
-    console.log('Login submitted');
+    if (this.email!.invalid) {
+      this.error.email = true;
+      this.error.global = true;
+    } else if (this.password!.invalid) {
+      this.error.password = true;
+      this.error.global = true;
+    } else {
+      console.log('Login submitted');
+    }
   }
 }

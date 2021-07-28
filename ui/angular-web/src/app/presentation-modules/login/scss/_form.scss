@@ -62,7 +62,20 @@ form {
   }
 
   .ng-invalid {
-    color: red;
+    color: rgb(255, 150, 150);
+  }
+
+  .error {
+    background-color: rgb(248, 98, 98);
+    color: $white;
+    width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    text-align: center;
+    border-radius: 10px;
+  }
+  .error-margin {
+    margin-bottom: 1rem;
   }
 }
 

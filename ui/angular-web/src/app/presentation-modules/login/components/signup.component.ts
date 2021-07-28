@@ -9,6 +9,12 @@ import {
 
 import { passwordMatchValidator } from '../password-match.directive';
 
+interface Error {
+  email: boolean;
+  password: boolean;
+  global: boolean;
+}
+
 @Component({
   selector: 'app-signup',
   templateUrl: '../view/login.component.html',
@@ -19,7 +25,11 @@ export class SignupComponent implements OnInit {
   public form: FormGroup;
   public loading = false;
   public submitted = false;
-  public error = '';
+  public error: Error = {
+    email: false,
+    password: false,
+    global: false,
+  };
 
   // Convenience getters to access form control properties
   get name(): AbstractControl | null {
@@ -44,10 +54,10 @@ export class SignupComponent implements OnInit {
         email: new FormControl('user@example.com', {
           validators: [Validators.email, Validators.required],
         }),
-        password: new FormControl('123456', {
+        password: new FormControl('12345', {
           validators: [Validators.minLength(6), Validators.required],
         }),
-        repeatPassword: new FormControl('1234', {
+        repeatPassword: new FormControl('12345', {
           validators: [Validators.required],
         }),
       },
@@ -58,6 +68,14 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {}
 
   submit() {
-    console.log('Signup submitted');
+    if (this.email!.invalid) {
+      this.error.email = true;
+      this.error.global = true;
+    } else if (this.password!.invalid) {
+      this.error.password = true;
+      this.error.global = true;
+    } else {
+      console.log('hello :)');
+    }
   }
 }

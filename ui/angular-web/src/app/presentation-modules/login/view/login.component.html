@@ -10,17 +10,35 @@
       <h3>{{ isLogin ? "Login to Tracker" : "Sign up to Tracker" }}</h3>
       <hr />
     </div>
-    <input *ngIf="!isLogin" type="text" formControlName="name" placeholder="Name" />
+    <input
+      *ngIf="!isLogin"
+      type="text"
+      formControlName="name"
+      placeholder="Name"
+    />
     <input type="email" formControlName="email" placeholder="Email" />
+    <div *ngIf="error.email && email!.invalid" class="error">
+      Please provide a properly formatted email address
+    </div>
     <input type="password" formControlName="password" placeholder="Password" />
-    <input *ngIf="!isLogin" type="password" formControlName="repeatPassword" placeholder="Repeat password" />
-    <button [disabled]="form.invalid" type="submit">{{ isLogin ? "Sign in" : "Create Account" }}</button>
+    <div *ngIf="error.password && password!.invalid" class="error error-margin">
+      Password must be 6 characters
+    </div>
+    <input
+      *ngIf="!isLogin"
+      type="password"
+      formControlName="repeatPassword"
+      placeholder="Repeat password"
+    />
+    <div *ngIf="repeatPassword!.invalid" class="error error-margin">
+      Passwords must be the same
+    </div>
+    <button [disabled]="error.global && form!.invalid" type="submit">
+      {{ isLogin ? "Sign in" : "Create Account" }}
+    </button>
 
     <div class="sign-in">
       {{ isLogin ? "Not a member?" : "Already a member? " }}
-      <!-- <button [routerLink]="isLogin ? ['/login/signup'] : ['/login']">
-        {{ !isLogin ? "Sign In" : "Sign up now" }}
-      </button> -->
       <a [routerLink]="isLogin ? ['/login/signup'] : ['/login']">
         {{ !isLogin ? "Sign In" : "Sign up now" }}
       </a>
